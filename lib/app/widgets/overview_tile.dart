@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:woas/app/models/activity.dart';
 import 'package:woas/app/pages/new_page.dart';
 import '../models/reporting_interval.dart';
@@ -6,8 +7,9 @@ import '../pages/details_page.dart';
 
 class OverviewTile extends StatelessWidget {
   final ReportingInterval interval;
-
   OverviewTile({this.interval});
+
+  final nf = NumberFormat('##0.0#', 'de_DE');
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +53,7 @@ class OverviewTile extends StatelessWidget {
                   textBaseline: TextBaseline.alphabetic,
                   children: [
                     Text(
-                      '${interval.distance > 0 ? interval.distance.toStringAsFixed(2) : 0.toString()}',
+                      '${interval.distance >= 0 ? nf.format(interval.distance) : nf.format(0.0)}',
                       style: TextStyle(
                         fontSize: 48.0,
                         fontWeight: FontWeight.bold,

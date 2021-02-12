@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:woas/app/models/activity.dart';
-import 'package:woas/app/models/reporting_interval.dart';
+import '../models/activity.dart';
+import '../models/reporting_interval.dart';
 
 import 'new_page.dart';
 
 class DetailsPage extends StatelessWidget {
   DetailsPage({this.interval});
-
   final ReportingInterval interval;
 
   final nf = NumberFormat('##0.0#', 'de_DE');
-
   static final String route = 'details';
 
   @override

@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:woas/app/widgets/menu_drawer.dart';
-import '../services/firebase_service.dart';
+import '../widgets/menu_drawer.dart';
 import '../widgets/chart_tile.dart';
-import '../../service_locator.dart';
-import '../models/activity.dart';
-import '../services/reporting_service.dart';
 import '../widgets/overview_tile.dart';
+import '../models/activity.dart';
+import '../../service_locator.dart';
+import '../services/firebase_service.dart';
+import '../services/reporting_service.dart';
 import 'new_page.dart';
 
 class DashBoardPage extends StatelessWidget {
@@ -30,7 +30,7 @@ class DashBoardPage extends StatelessWidget {
             builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (!snapshot.hasData) return Center(child: Text('Keine Daten gefunden'));
               final allActivities = snapshot.data.docs.map((d) => Activity.fromFS(d.id, d.data())).toList();
-              allActivities.forEach((a) => print('(TRACE) activity: ${a.id}, ${a.uid}, ${a.time.toString()}, ${a.distance}'));
+              // allActivities.forEach((a) => print('(TRACE) activity: ${a.id}, ${a.uid}, ${a.time.toString()}, ${a.distance}'));
               final config = _reportingService.buildIntervals(allActivities);
               return ListView(
                 scrollDirection: Axis.vertical,

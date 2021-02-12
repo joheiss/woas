@@ -94,7 +94,7 @@ class ChartTile extends StatelessWidget {
   double _getDistanceForDate(DateTime date) {
     final activity = interval.activities.firstWhere((a) => a.time.day == date.day, orElse: () => null);
     if (activity == null) return 0.0;
-    print('(TRACE) Activity found: ${activity.id}, ${activity.time.toIso8601String()}, ${activity.distance}');
+    // print('(TRACE) Activity found: ${activity.id}, ${activity.time.toIso8601String()}, ${activity.distance}');
     return activity.distance;
   }
 }
