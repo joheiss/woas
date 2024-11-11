@@ -1,10 +1,11 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:woas/app/models/activity.dart';
 import '../pages/details_page.dart';
 import '../models/reporting_interval.dart';
 
 class ChartTile extends StatelessWidget {
-  ChartTile({this.interval});
+  ChartTile({required this.interval});
 
   final ReportingInterval interval;
 
@@ -92,9 +93,13 @@ class ChartTile extends StatelessWidget {
   }
 
   double _getDistanceForDate(DateTime date) {
-    final activity = interval.activities.firstWhere((a) => a.time.day == date.day, orElse: () => null);
-    if (activity == null) return 0.0;
-    // print('(TRACE) Activity found: ${activity.id}, ${activity.time.toIso8601String()}, ${activity.distance}');
-    return activity.distance;
+    try {
+      final Activity? activity = interval.activities.firstWhere((a) => a.time!.day == date.day,
+          orElse: () => throw('not_found'));
+      if (activity == null) return 0.0;
+      return activity.distance ?? 0.0;
+    } catch (e) {
+      return 0.0;
+    }
   }
 }

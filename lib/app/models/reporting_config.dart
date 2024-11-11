@@ -1,6 +1,7 @@
 import 'reporting_interval.dart';
 
 class ReportingConfig {
-  List<ReportingInterval> intervals;
-  ReportingConfig({this.intervals});
+  List<String>? routes;
+  List<ReportingInterval>? intervals;
+  ReportingConfig({this.intervals, this.routes});
 }

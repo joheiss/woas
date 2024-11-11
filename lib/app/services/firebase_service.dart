@@ -6,11 +6,11 @@ class FirebaseService {
   final _auth = FirebaseAuth.instance;
   final _store = FirebaseFirestore.instance;
 
-  User getCurrentUser() {
+  User? getCurrentUser() {
     return _auth.currentUser;
   }
 
-  Future<User> login(String email, String password) async {
+  Future<User?> login(String email, String password) async {
     try {
       final creds = await _auth.signInWithEmailAndPassword(email: email, password: password);
       if (creds.user != null)
@@ -18,7 +18,6 @@ class FirebaseService {
       else
         return null;
     } catch (e) {
-      print(e.code);
       print(e);
       return null;
     }
@@ -30,9 +29,9 @@ class FirebaseService {
 
   Future<DocumentReference> addActivity(Activity activity) {
     return _store.collection('activities').add({
-      'uid': _auth.currentUser.uid,
+      'uid': _auth.currentUser!.uid,
       'route': activity.route,
-      'time': Timestamp.fromMillisecondsSinceEpoch(activity.time.millisecondsSinceEpoch),
+      'time': Timestamp.fromMillisecondsSinceEpoch(activity.time!.millisecondsSinceEpoch),
       'distance': activity.distance,
       'duration': activity.duration,
       'weight': activity.weight,
@@ -42,7 +41,7 @@ class FirebaseService {
   Stream<QuerySnapshot> fetchAllActivities() {
     return _store
         .collection('activities')
-        .where('uid', isEqualTo: _auth.currentUser.uid)
+        .where('uid', isEqualTo: _auth.currentUser!.uid)
         .orderBy('time', descending: true)
         .snapshots();
   }
@@ -52,7 +51,7 @@ class FirebaseService {
     final to = Timestamp.fromMillisecondsSinceEpoch(end.millisecondsSinceEpoch);
     return _store
         .collection('activities')
-        .where('uid', isEqualTo: _auth.currentUser.uid)
+        .where('uid', isEqualTo: _auth.currentUser!.uid)
         .where('time', isGreaterThanOrEqualTo: from)
         .where('time', isLessThanOrEqualTo: to)
         .orderBy('time', descending: true)

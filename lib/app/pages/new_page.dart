@@ -7,7 +7,7 @@ import '../widgets/basic_date_field.dart';
 import '../widgets/basic_time_field.dart';
 
 class NewPage extends StatefulWidget {
-  NewPage({this.activity});
+  NewPage({required this.activity});
   final Activity activity;
 
   static final String route = 'new';
@@ -18,20 +18,20 @@ class NewPage extends StatefulWidget {
 
 class _NewPageState extends State<NewPage> {
   final _firebaseService = locator<FirebaseService>();
-  TextEditingController dateEditController;
-  TextEditingController timeEditController;
-  TextEditingController routeEditController;
-  TextEditingController distanceEditController;
-  TextEditingController durationEditController;
-  TextEditingController weightEditController;
+  late TextEditingController dateEditController;
+  late TextEditingController timeEditController;
+  late TextEditingController routeEditController;
+  late TextEditingController distanceEditController;
+  late TextEditingController durationEditController;
+  late TextEditingController weightEditController;
 
   @override
   void initState() {
     super.initState();
     final nf = NumberFormat('##0.0#', 'de_DE');
     print('(TRACE) Activity: ${widget.activity}');
-    dateEditController = TextEditingController(text: DateFormat('dd.MM.yyyy').format(widget.activity.time));
-    timeEditController = TextEditingController(text: DateFormat('HH:mm').format(widget.activity.time));
+    dateEditController = TextEditingController(text: DateFormat('dd.MM.yyyy').format(widget.activity.time!));
+    timeEditController = TextEditingController(text: DateFormat('HH:mm').format(widget.activity.time!));
     routeEditController = TextEditingController(text: widget.activity.route);
     distanceEditController = TextEditingController(text: widget.activity.distance != null ? nf.format(widget.activity.distance) : null);
     durationEditController = TextEditingController(text: widget.activity.duration != null ? widget.activity.duration.toString() : null);
@@ -100,15 +100,15 @@ class _NewPageState extends State<NewPage> {
                 ),
                 SizedBox(height: 20.0),
 
-                RaisedButton(
+                ElevatedButton(
                   onPressed: () {
                     print('(TRACE) Activity id: ${widget.activity.id}');
                     if (widget.activity.id == null) _createActivity();
                     else _updateActivity();
                     Navigator.pop(context);
                   },
-                  color: Theme.of(context).accentColor,
-                  elevation: 5.0,
+                  // color: Theme.of(context).accentColor,
+                  // elevation: 5.0,
                   child: Text('Speichern'),
                 ),
               ],
@@ -125,7 +125,7 @@ class _NewPageState extends State<NewPage> {
       route: routeEditController.value.text,
       distance: double.parse(distanceEditController.value.text.replaceFirst(',', '.')),
       duration: int.parse(durationEditController.value.text),
-      weight: int.parse(weightEditController.value.text, onError: null),
+      weight: int.tryParse(weightEditController.value.text),
     );
     await _firebaseService.addActivity(activity);
   }
@@ -135,7 +135,7 @@ class _NewPageState extends State<NewPage> {
     widget.activity.route = routeEditController.value.text;
     widget.activity.distance = double.parse(distanceEditController.value.text.replaceFirst(',', '.'));
     widget.activity.duration = int.parse(durationEditController.value.text);
-    widget.activity.weight= int.parse(weightEditController.value.text, onError: null);
+    widget.activity.weight = int.tryParse(weightEditController.value.text);
     await _firebaseService.updateActivity(widget.activity);
   }
   DateTime _dateTimeFromStrings(String date, String time) {

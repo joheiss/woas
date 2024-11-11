@@ -7,9 +7,9 @@ enum ReportingIntervalSize {
 }
 
 class ReportingInterval {
-  final String title;
-  final DateTime start;
-  final DateTime end;
+  final String? title;
+  final DateTime? start;
+  final DateTime? end;
   List<Activity> activities;
   double distance;
   int duration;

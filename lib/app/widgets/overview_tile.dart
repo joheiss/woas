@@ -7,7 +7,7 @@ import '../pages/details_page.dart';
 
 class OverviewTile extends StatelessWidget {
   final ReportingInterval interval;
-  OverviewTile({this.interval});
+  OverviewTile({required this.interval});
 
   final nf = NumberFormat('##0.0#', 'de_DE');
 
@@ -39,7 +39,7 @@ class OverviewTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  interval.title,
+                  interval.title!,
                   style: TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.normal,

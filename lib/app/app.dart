@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'models/activity.dart';
+import 'models/reporting_interval.dart';
 import 'services/firebase_service.dart';
 import '../service_locator.dart';
 import 'pages/login_page.dart';
@@ -39,7 +41,7 @@ class App extends StatelessWidget {
     if (settings.name == DetailsPage.route) {
       return MaterialPageRoute(
           builder: (BuildContext context) {
-            final interval = settings.arguments;
+            final interval = settings.arguments as ReportingInterval;
             return DetailsPage(interval: interval);
           }
       );
@@ -47,7 +49,7 @@ class App extends StatelessWidget {
     if (settings.name == NewPage.route) {
       return MaterialPageRoute(
           builder: (BuildContext context) {
-            final activity = settings.arguments;
+            final activity = settings.arguments as Activity;
             return NewPage(activity: activity);
           }
       );

@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Activity {
-  String id;
-  String uid;
-  DateTime time;
-  String route;
-  double distance;
-  int duration;
-  int weight;
+  String? id;
+  String? uid;
+  DateTime? time;
+  String? route;
+  double? distance;
+  int? duration;
+  int? weight;
 
   Activity({this.id, this.uid, this.time, this.route, this.distance, this.duration, this.weight});
 

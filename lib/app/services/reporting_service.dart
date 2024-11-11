@@ -6,6 +6,7 @@ import '../utilities/date_utilities.dart';
 class ReportingService {
 
   ReportingConfig buildIntervals(List<Activity> allActivities) {
+    List<String> routes = _collectRoutes(allActivities);
     List<ReportingInterval> intervals = [];
     DateTime start;
     DateTime end;
@@ -44,16 +45,27 @@ class ReportingService {
     end = DateUtilities.endOfDay(today);
     intervals.add(_buildInterval('Insgesamt', allActivities, start, end));
 
-    return ReportingConfig(intervals: intervals);
+    print('(TRACE) # of routes: ${routes.length}');
+    routes.forEach((r) => print('(TRACE) Route: $r'));
+    return ReportingConfig(intervals: intervals, routes: routes);
+  }
+
+  List<String> _collectRoutes(List<Activity> allActivities) {
+    List<String> routes = <String>[];
+    allActivities.forEach((a) {
+      if (routes.indexOf(a.route!) == -1 ) routes.add(a.route!);
+    });
+    routes.forEach((r) => print('(TRACE) Route: $r'));
+    return routes;
   }
 
   ReportingInterval _buildInterval(String title, List<Activity> allActivities, DateTime start, DateTime end) {
     double distance = 0.0;
     int duration = 0;
-    List<Activity> activities = allActivities.where((d) => DateUtilities.isBetween(d.time, start, end)).toList();
+    List<Activity> activities = allActivities.where((d) => DateUtilities.isBetween(d.time!, start, end)).toList();
     activities.forEach((e) {
-      distance += e.distance;
-      duration += e.duration;
+      distance += e.distance!;
+      duration += e.duration!;
     });
     return ReportingInterval(
       title: title,

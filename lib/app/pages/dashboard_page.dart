@@ -29,45 +29,46 @@ class DashBoardPage extends StatelessWidget {
             stream: _firebaseService.fetchAllActivities(),
             builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (!snapshot.hasData) return Center(child: Text('Keine Daten gefunden'));
-              final allActivities = snapshot.data.docs.map((d) => Activity.fromFS(d.id, d.data())).toList();
+              final allActivities = snapshot.data?.docs.map((d) => Activity.fromFS(d.id, d.data()!)).toList();
               // allActivities.forEach((a) => print('(TRACE) activity: ${a.id}, ${a.uid}, ${a.time.toString()}, ${a.distance}'));
-              final config = _reportingService.buildIntervals(allActivities);
+              final config = _reportingService.buildIntervals(allActivities!);
+              config.intervals?.forEach((i) => print('${i.title}, ${i.start}, ${i.end}'));
               return ListView(
                 scrollDirection: Axis.vertical,
                 children: [
                   Row(
                     children: [
-                      OverviewTile(interval: config.intervals[0]),
+                      OverviewTile(interval: config.intervals![0]),
                       SizedBox(width: 10.0),
-                      OverviewTile(interval: config.intervals[1]),
+                      OverviewTile(interval: config.intervals![1]),
                     ],
                   ),
                   SizedBox(height: 10.0),
-                  ChartTile(interval: config.intervals[2]),
+                  ChartTile(interval: config.intervals![2]),
                   SizedBox(height: 10.0),
                   Row(
                     children: [
-                      OverviewTile(interval: config.intervals[3]),
+                      OverviewTile(interval: config.intervals![3]),
                       SizedBox(width: 10.0),
-                      OverviewTile(interval: config.intervals[4]),
+                      OverviewTile(interval: config.intervals![4]),
                     ],
                   ),
                   SizedBox(height: 10.0),
                   Row(
                     children: [
-                      OverviewTile(interval: config.intervals[5]),
+                      OverviewTile(interval: config.intervals![5]),
                     ],
                   ),
                   SizedBox(height: 10.0),
                   Row(
                     children: [
-                      OverviewTile(interval: config.intervals[6]),
+                      OverviewTile(interval: config.intervals![6]),
                     ],
                   ),
                   SizedBox(height: 10.0),
                   Row(
                     children: [
-                      OverviewTile(interval: config.intervals[7]),
+                      OverviewTile(interval: config.intervals![7]),
                     ],
                   ),
                 ],

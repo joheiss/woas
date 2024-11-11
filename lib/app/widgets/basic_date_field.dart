@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class BasicDateField extends StatelessWidget {
-  BasicDateField({@required this.controller});
+  BasicDateField({required this.controller});
   final TextEditingController controller;
 
   final format = DateFormat('dd.MM.yyyy');

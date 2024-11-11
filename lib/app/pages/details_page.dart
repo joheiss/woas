@@ -6,7 +6,7 @@ import '../models/reporting_interval.dart';
 import 'new_page.dart';
 
 class DetailsPage extends StatelessWidget {
-  DetailsPage({this.interval});
+  DetailsPage({required this.interval});
   final ReportingInterval interval;
 
   final nf = NumberFormat('##0.0#', 'de_DE');
@@ -36,7 +36,7 @@ class DetailsPage extends StatelessWidget {
                     onTap: () => Navigator.pushNamed(context, NewPage.route, arguments: activity),
                     contentPadding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
                     leading: Text(
-                      '${DateFormat('dd.MM.yyyy').format(activity.time)}',
+                      '${DateFormat('dd.MM.yyyy').format(activity.time!)}',
                       style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
                     ),
                     title: Text('${activity.route}'),
