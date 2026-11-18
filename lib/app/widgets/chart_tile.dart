@@ -120,7 +120,7 @@ class ChartTile extends StatelessWidget {
         barRods: [
           BarChartRodData(
             toY: _getDistanceForDate(date),
-            color: Theme.of(context).colorScheme.secondary,
+            color: Colors.tealAccent,
           ),
         ],
       ));

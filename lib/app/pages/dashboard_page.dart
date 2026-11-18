@@ -78,6 +78,9 @@ class DashBoardPage extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.tealAccent,
+        foregroundColor: Colors.black,
+        shape: CircleBorder(),
         onPressed: () => Navigator.pushNamed(context, NewPage.route, arguments: Activity.fromEmpty()),
         child: Icon(Icons.add),
       ),
