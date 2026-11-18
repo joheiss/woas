@@ -41,3 +41,10 @@ app.*.map.json
 
 # firebase
 **/google-services.json
+
+# Build output / generated
+android/build/
+ios/Flutter/ephemeral/
+macos/Flutter/ephemeral/
+linux/flutter/ephemeral/
+windows/flutter/ephemeral/
