@@ -1,4 +1,7 @@
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+// datetime_picker_formfield is built on flutter/material.dart, so its types
+// (InputDecoration, TimeOfDay) only match this import.
+// ignore: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 

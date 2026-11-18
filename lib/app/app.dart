@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:material_ui/material_ui.dart';
 import 'models/activity.dart';
 import 'models/reporting_interval.dart';
 import 'services/firebase_service.dart';

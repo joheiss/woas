@@ -1,5 +1,5 @@
 import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:woas/app/models/activity.dart';
 import '../pages/details_page.dart';
 import '../models/reporting_interval.dart';
