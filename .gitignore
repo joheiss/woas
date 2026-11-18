@@ -54,3 +54,9 @@ windows/flutter/ephemeral/
 /macos/
 /web/
 /windows/
+
+# Local tooling / editor files
+/.vscode/
+/analysis_options.yaml
+/devtools_options.yaml
+/android/.artifacts/
