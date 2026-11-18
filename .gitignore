@@ -48,3 +48,9 @@ ios/Flutter/ephemeral/
 macos/Flutter/ephemeral/
 linux/flutter/ephemeral/
 windows/flutter/ephemeral/
+
+# Generated platform folders (not used by this app)
+/linux/
+/macos/
+/web/
+/windows/
