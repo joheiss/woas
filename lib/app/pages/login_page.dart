@@ -90,16 +90,7 @@ class _LoginPageState extends State<LoginPage> {
     });
     final user = await _firebaseService.login(emailController.value.text, passwordController.value.text);
     print(user!.email);
-    if (user != null)
-      Navigator.pushNamed(context, DashBoardPage.route);
-    else {
-      setState(() {
-        isSpinning = false;
-      });
-      final errorMessage = 'Anmeldung fehlgeschlagen';
-      print(errorMessage);
-      // _showToast(errorMessage, duration: Toast.LENGTH_LONG, gravity: Toast.TOP);
-    }
+    Navigator.pushNamed(context, DashBoardPage.route);
   }
 
   void _showToast(String msg, {required int duration, required int gravity}) {

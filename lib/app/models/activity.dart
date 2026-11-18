@@ -1,3 +1,4 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Activity {
@@ -21,8 +22,21 @@ class Activity {
     uid = fields['uid'];
     time = DateTime.fromMillisecondsSinceEpoch(fields['time'].millisecondsSinceEpoch);
     route = fields['route'];
-    distance = fields['distance'];
-    duration = fields['duration'];
-    weight = fields['weight'];
+    distance = (fields['distance'] as num?)?.toDouble();
+    duration = (fields['duration'] as num?)?.toInt();
+    weight = (fields['weight'] as num?)?.toInt();
+  }
+
+  Activity.fromFSNew(String id, DocumentSnapshot<Map<String, dynamic>> snapshot,
+  ) {
+    final fields = snapshot.data();
+    this.id = id;
+    uid = fields?['uid'];
+    time = DateTime.fromMillisecondsSinceEpoch(
+        fields?['time'].millisecondsSinceEpoch);
+    route = fields?['route'];
+    distance = (fields?['distance'] as num?)?.toDouble();
+    duration = (fields?['duration'] as num?)?.toInt();
+    weight = (fields?['weight'] as num?)?.toInt();
   }
 }

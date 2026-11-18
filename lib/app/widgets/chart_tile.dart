@@ -39,7 +39,7 @@ class ChartTile extends StatelessWidget {
               SizedBox(height: 8.0),
               Expanded(
                 child: BarChart(
-                  _getData(context),
+                  _getDataNew(context),
                 ),
               ),
             ],
@@ -49,6 +49,7 @@ class ChartTile extends StatelessWidget {
     );
   }
 
+/*
   BarChartData _getData(context) {
     return BarChartData(
       titlesData: FlTitlesData(
@@ -74,6 +75,41 @@ class ChartTile extends StatelessWidget {
       barGroups: _buildGroups(context),
     );
   }
+*/
+  static const _axisStyle = TextStyle(color: Colors.blueGrey, fontWeight: FontWeight.bold, fontSize: 12);
+
+  Widget _axisLabel(double value, TitleMeta meta) {
+    return SideTitleWidget(
+      meta: meta,
+      child: Text(meta.formattedValue, style: _axisStyle),
+    );
+  }
+
+  BarChartData _getDataNew(context) {
+    return BarChartData(
+      titlesData: FlTitlesData(
+        show: true,
+        topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+        rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+        bottomTitles: AxisTitles(
+          sideTitles: SideTitles(
+            showTitles: true,
+            reservedSize: 24,
+            getTitlesWidget: _axisLabel,
+          ),
+        ),
+        leftTitles: AxisTitles(
+          sideTitles: SideTitles(
+            showTitles: true,
+            reservedSize: 48,
+            getTitlesWidget: _axisLabel,
+          ),
+        ),
+      ),
+      borderData: FlBorderData(show: false),
+      barGroups: _buildGroups(context),
+    );
+  }
 
   List<BarChartGroupData> _buildGroups(BuildContext context) {
     List<BarChartGroupData> data = <BarChartGroupData>[];
@@ -83,8 +119,8 @@ class ChartTile extends StatelessWidget {
         x: date.day,
         barRods: [
           BarChartRodData(
-            y: _getDistanceForDate(date),
-            colors: [Theme.of(context).accentColor],
+            toY: _getDistanceForDate(date),
+            color: Theme.of(context).colorScheme.secondary,
           ),
         ],
       ));

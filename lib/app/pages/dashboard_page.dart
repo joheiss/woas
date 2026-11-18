@@ -29,7 +29,7 @@ class DashBoardPage extends StatelessWidget {
             stream: _firebaseService.fetchAllActivities(),
             builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (!snapshot.hasData) return Center(child: Text('Keine Daten gefunden'));
-              final allActivities = snapshot.data?.docs.map((d) => Activity.fromFS(d.id, d.data()!)).toList();
+              final allActivities = snapshot.data?.docs.map((d) => Activity.fromFS(d.id, d.data()! as Map<String, dynamic>)).toList();
               // allActivities.forEach((a) => print('(TRACE) activity: ${a.id}, ${a.uid}, ${a.time.toString()}, ${a.distance}'));
               final config = _reportingService.buildIntervals(allActivities!);
               config.intervals?.forEach((i) => print('${i.title}, ${i.start}, ${i.end}'));
