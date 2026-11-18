@@ -92,9 +92,4 @@ class _LoginPageState extends State<LoginPage> {
     print(user!.email);
     Navigator.pushNamed(context, DashBoardPage.route);
   }
-
-  void _showToast(String msg, {required int duration, required int gravity}) {
-    // Toast.show(msg, context, duration: duration, gravity: gravity);
-    print(msg);
-  }
 }
