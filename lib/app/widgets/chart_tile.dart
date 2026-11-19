@@ -13,6 +13,7 @@ class ChartTile extends StatelessWidget {
   Widget build(BuildContext context) {
     print('(TRACE) # of activities ${interval.activities.length}');
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: () => Navigator.pushNamed(context, DetailsPage.route, arguments: interval),
       child: AspectRatio(
         aspectRatio: 2,
@@ -38,8 +39,12 @@ class ChartTile extends StatelessWidget {
               ),
               SizedBox(height: 8.0),
               Expanded(
-                child: BarChart(
-                  _getDataNew(context),
+                // The chart is display-only; ignore its own touch handling so
+                // taps reach the tile's GestureDetector.
+                child: IgnorePointer(
+                  child: BarChart(
+                    _getDataNew(context),
+                  ),
                 ),
               ),
             ],
