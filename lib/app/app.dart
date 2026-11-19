@@ -16,9 +16,7 @@ class App extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData.dark().copyWith(),
       locale: Locale('de', 'DE'),
-      localizationsDelegates: [
-        GlobalMaterialLocalizations.delegate
-      ],
+      localizationsDelegates: GlobalMaterialLocalizations.delegates,
       supportedLocales: [
         const Locale('en'),
         const Locale('de', 'DE'),
