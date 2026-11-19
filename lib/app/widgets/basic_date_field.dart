@@ -1,9 +1,5 @@
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
-// datetime_picker_formfield is built on flutter/material.dart, so its types
-// (InputDecoration, TimeOfDay) only match this import.
-// ignore: deprecated_member_use
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:material_ui/material_ui.dart';
 
 class BasicDateField extends StatelessWidget {
   BasicDateField({required this.controller});
@@ -13,26 +9,31 @@ class BasicDateField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DateTimeField(
+    return TextField(
       controller: controller,
-      format: format,
+      readOnly: true,
       textAlign: TextAlign.center,
       decoration: InputDecoration(
         hintText: 'Datum',
         prefixIcon: Icon(Icons.date_range_rounded),
       ),
-      onShowPicker: (context, value) {
-        return showDatePicker(
+      onTap: () async {
+        final now = DateTime.now();
+        DateTime initial;
+        try {
+          initial = format.parseStrict(controller.text);
+        } catch (_) {
+          initial = now;
+        }
+        final first = now.subtract(Duration(days: 60));
+        final picked = await showDatePicker(
           context: context,
-          initialDate: value ?? DateTime.now(),
-          firstDate: DateTime.now().subtract(Duration(days: 60)),
-          lastDate: DateTime.now(),
+          initialDate: initial.isBefore(first) || initial.isAfter(now) ? now : initial,
+          firstDate: first,
+          lastDate: now,
         );
+        if (picked != null) controller.text = format.format(picked);
       },
     );
-  }
-
-  bool isEmpty(dynamic value) {
-    return value == null;
   }
 }

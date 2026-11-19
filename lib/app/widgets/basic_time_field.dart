@@ -1,9 +1,5 @@
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
-// datetime_picker_formfield is built on flutter/material.dart, so its types
-// (InputDecoration, TimeOfDay) only match this import.
-// ignore: deprecated_member_use
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:material_ui/material_ui.dart';
 
 class BasicTimeField extends StatelessWidget {
   BasicTimeField({required this.controller});
@@ -13,21 +9,29 @@ class BasicTimeField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DateTimeField(
+    return TextField(
       controller: controller,
-      format: format,
+      readOnly: true,
       textAlign: TextAlign.center,
-        decoration: InputDecoration(
-          hintText: 'Uhrzeit',
-          prefixIcon: Icon(Icons.access_time),
-        ),
-        onShowPicker: (context, value) async {
-        final time = await showTimePicker(
+      decoration: InputDecoration(
+        hintText: 'Uhrzeit',
+        prefixIcon: Icon(Icons.access_time),
+      ),
+      onTap: () async {
+        DateTime initial;
+        try {
+          initial = format.parseStrict(controller.text);
+        } catch (_) {
+          initial = DateTime.now();
+        }
+        final picked = await showTimePicker(
           context: context,
-            initialTime: TimeOfDay.fromDateTime(value ?? DateTime.now()),
+          initialTime: TimeOfDay.fromDateTime(initial),
         );
-        return DateTimeField.convert(time);
-      }
+        if (picked != null) {
+          controller.text = format.format(DateTime(2000, 1, 1, picked.hour, picked.minute));
+        }
+      },
     );
   }
 }
