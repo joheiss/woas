@@ -46,6 +46,8 @@ class DashBoardPage extends StatelessWidget {
                   SizedBox(height: 10.0),
                   ChartTile(interval: config.intervals![2]),
                   SizedBox(height: 10.0),
+                  ChartTile(interval: config.intervals![2], metric: ChartMetric.duration),
+                  SizedBox(height: 10.0),
                   Row(
                     children: [
                       OverviewTile(interval: config.intervals![3]),

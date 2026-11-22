@@ -3,15 +3,40 @@ import 'package:material_ui/material_ui.dart';
 import 'package:woas/app/models/activity.dart';
 import '../pages/details_page.dart';
 import '../models/reporting_interval.dart';
+import '../utilities/date_utilities.dart';
+
+/// The value summed up per day in a [ChartTile].
+enum ChartMetric { distance, duration }
 
 class ChartTile extends StatelessWidget {
-  ChartTile({required this.interval});
+  ChartTile({required this.interval, this.metric = ChartMetric.distance});
 
   final ReportingInterval interval;
+  final ChartMetric metric;
+
+  String get _title => metric == ChartMetric.distance ? '10 Tage · km' : '10 Tage · min';
+
+  /// Sums [metric] of all [activities] per calendar day (CET/CEST).
+  /// Returns one total per entry in [days], in the same order.
+  static List<double> dailyTotals(List<Activity> activities, List<DateTime> days, ChartMetric metric) {
+    final totals = <DateTime, double>{};
+    for (final a in activities) {
+      if (a.time == null) continue;
+      final day = DateUtilities.berlinDate(a.time!);
+      final value = metric == ChartMetric.distance ? (a.distance ?? 0.0) : (a.duration ?? 0).toDouble();
+      totals[day] = (totals[day] ?? 0.0) + value;
+    }
+    return days.map((d) => totals[DateTime(d.year, d.month, d.day)] ?? 0.0).toList();
+  }
+
+  /// The 10 days before today (CET/CEST), oldest first.
+  static List<DateTime> lastTenDays() {
+    final today = DateUtilities.berlinDate(DateTime.now());
+    return List.generate(10, (i) => DateTime(today.year, today.month, today.day - (10 - i)));
+  }
 
   @override
   Widget build(BuildContext context) {
-    print('(TRACE) # of activities ${interval.activities.length}');
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () => Navigator.pushNamed(context, DetailsPage.route, arguments: interval),
@@ -29,7 +54,7 @@ class ChartTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                '10 Tage',
+                _title,
                 style: TextStyle(
                   fontSize: 16.0,
                   fontWeight: FontWeight.normal,
@@ -54,33 +79,6 @@ class ChartTile extends StatelessWidget {
     );
   }
 
-/*
-  BarChartData _getData(context) {
-    return BarChartData(
-      titlesData: FlTitlesData(
-        show: true,
-        bottomTitles: SideTitles(
-          showTitles: true,
-          getTextStyles: (value) => TextStyle(color: Colors.blueGrey, fontWeight: FontWeight.bold, fontSize: 14),
-          margin: 8,
-          getTitles: (double value) => value.toStringAsFixed(0),
-        ),
-        leftTitles: SideTitles(
-          showTitles: true,
-          getTextStyles: (value) => TextStyle(color: Colors.blueGrey, fontWeight: FontWeight.bold, fontSize: 14),
-          margin: 12,
-          getTitles: (double value) {
-            return value.toStringAsFixed(1);
-          },
-        ),
-      ),
-      borderData: FlBorderData(
-        show: false,
-      ),
-      barGroups: _buildGroups(context),
-    );
-  }
-*/
   static const _axisStyle = TextStyle(color: Colors.blueGrey, fontWeight: FontWeight.bold, fontSize: 12);
 
   Widget _axisLabel(double value, TitleMeta meta) {
@@ -117,30 +115,16 @@ class ChartTile extends StatelessWidget {
   }
 
   List<BarChartGroupData> _buildGroups(BuildContext context) {
-    List<BarChartGroupData> data = <BarChartGroupData>[];
-    for (int i = 0; i < 10; i++) {
-      final date = DateTime.now().subtract(Duration(days: 10 - i));
-      data.add(BarChartGroupData(
-        x: date.day,
-        barRods: [
-          BarChartRodData(
-            toY: _getDistanceForDate(date),
-            color: Colors.tealAccent,
-          ),
-        ],
-      ));
-    }
-    return data;
-  }
-
-  double _getDistanceForDate(DateTime date) {
-    try {
-      final Activity? activity = interval.activities.firstWhere((a) => a.time!.day == date.day,
-          orElse: () => throw('not_found'));
-      if (activity == null) return 0.0;
-      return activity.distance ?? 0.0;
-    } catch (e) {
-      return 0.0;
-    }
+    final days = lastTenDays();
+    final totals = dailyTotals(interval.activities, days, metric);
+    return List.generate(days.length, (i) => BarChartGroupData(
+          x: days[i].day,
+          barRods: [
+            BarChartRodData(
+              toY: totals[i],
+              color: Colors.tealAccent,
+            ),
+          ],
+        ));
   }
 }
